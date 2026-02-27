@@ -1,25 +1,35 @@
-import ThemeToggle from "@components/ui/ThemeToggle";
-import Button from "@components/ui/Buttons.tsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
+import PublicRoute from "@routes/PublicRoute";
+import PrivateRoute from "@routes/PrivateRoute";
+import HomeRoute from "@routes/HomeRoute";
+
+import LoginPage from "@pages/LoginPage";
+
+/* temp dashboard */
+const Dashboard = () => <div className="p-6">Dashboard</div>;
 
 const App = () => {
   return (
-      <>
-        <ThemeToggle />
-        <div className="bg-bg"></div>
-        <div className="flex flex-wrap gap-4">
-          <Button variant="primary" intent="fill">Example</Button>
-          <Button variant="primary" intent="stroke">Example</Button>
+      <BrowserRouter>
+        <Toaster position="bottom-left" containerStyle={{ bottom: 24, left: 24 }} />
 
-          <Button variant="secondary" intent="fill">Example</Button>
-          <Button variant="secondary" intent="stroke">Example</Button>
+        <Routes>
+          {/*  ROOT RESOLVER */}
+          <Route path="/" element={<HomeRoute />} />
 
-          <Button variant="mute-primary" intent="fill">Example</Button>
-          <Button variant="mute-primary" intent="stroke">Example</Button>
+          {/* ---------- PUBLIC ---------- */}
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<LoginPage />} />
+          </Route>
 
-          <Button variant="mute-secondary" intent="fill">Example</Button>
-          <Button variant="mute-secondary" intent="stroke">Example</Button>
-        </div>
-      </>
+          {/* ---------- PRIVATE ---------- */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
   );
 };
 
