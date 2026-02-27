@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ---------- BACKGROUND ---------- */
+    --bg: 248 250 252;
+    --surface: 255 255 255;
+    --surface-muted: 241 245 249;
+
+    /* ---------- TEXT ---------- */
+    --text: 15 23 42;
+    --text-muted: 100 116 139;
+    --text-inverse: 255 255 255;
+
+    /* ---------- BORDER ---------- */
+    --border: 226 232 240;
+    --border-muted: 241 245 249;
+
+    /* ---------- PRIMARY (BLUE) ---------- */
+    --primary: 59 130 246;
+    --primary-hover: 37 99 235;
+    --primary-foreground: 255 255 255;
+
+    /* ---------- SECONDARY (GREEN ACCENT) ---------- */
+    --secondary: 16 185 129;
+    --secondary-hover: 5 150 105;
+    --secondary-foreground: 255 255 255;
+
+    /* ---------- STATE ---------- */
+    --success: 34 197 94;
+    --warning: 245 158 11;
+    --error: 239 68 68;
+    --info: 6 182 212;
+  }
+
+  .dark {
+    /* ---------- BACKGROUND ---------- */
+    --bg: 2 6 23;
+    --surface: 15 23 42;
+    --surface-muted: 30 41 59;
+
+    /* ---------- TEXT ---------- */
+    --text: 248 250 252;
+    --text-muted: 148 163 184;
+    --text-inverse: 2 6 23;
+
+    /* ---------- BORDER ---------- */
+    --border: 30 41 59;
+    --border-muted: 15 23 42;
+
+    /* ---------- PRIMARY ---------- */
+    --primary: 96 165 250;
+    --primary-hover: 59 130 246;
+    --primary-foreground: 2 6 23;
+
+    /* ---------- SECONDARY (GREEN ACCENT DARK) ---------- */
+    --secondary: 52 211 153;
+    --secondary-hover: 16 185 129;
+    --secondary-foreground: 2 44 34;
+
+    /* ---------- STATE ---------- */
+    --success: 74 222 128;
+    --warning: 251 191 36;
+    --error: 248 113 113;
+    --info: 34 211 238;
+  }
+}
