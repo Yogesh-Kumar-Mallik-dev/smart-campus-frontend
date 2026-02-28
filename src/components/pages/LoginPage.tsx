@@ -7,6 +7,7 @@ import Input from "@components/ui/Input";
 import Button from "@components/ui/Buttons";
 import { toastError, toastSuccess } from "@/lib/toast";
 
+import logo from "@/assets/logo_bbdit.png"
 /* ---------- SCHEMA ---------- */
 const schema = z.object({
   memberId: z.string().min(1, "Member ID is required"),
@@ -53,7 +54,7 @@ const LoginPage = () => {
             {/* ---------- LOGO PLACEHOLDER ---------- */}
             <div className="flex justify-center">
               <div className="w-20 h-20 rounded-full bg-surface-muted border border-border flex items-center justify-center">
-                <span className="text-text-muted text-sm">LOGO</span>
+                <img src={logo} alt="Logo" className="w-16 h-16 object-contain" />
               </div>
             </div>
 

@@ -6,6 +6,7 @@ import PrivateRoute from "@routes/PrivateRoute";
 import HomeRoute from "@routes/HomeRoute";
 
 import LoginPage from "@pages/LoginPage";
+import NotFoundPage from "@pages/NotFoundPage";
 
 /* temp dashboard */
 const Dashboard = () => <div className="p-6">Dashboard</div>;
@@ -16,18 +17,21 @@ const App = () => {
         <Toaster position="bottom-left" containerStyle={{ bottom: 24, left: 24 }} />
 
         <Routes>
-          {/*  ROOT RESOLVER */}
+          {/* ROOT RESOLVER */}
           <Route path="/" element={<HomeRoute />} />
 
-          {/* ---------- PUBLIC ---------- */}
+          {/* PUBLIC */}
           <Route element={<PublicRoute />}>
             <Route path="/login" element={<LoginPage />} />
           </Route>
 
-          {/* ---------- PRIVATE ---------- */}
+          {/* PRIVATE */}
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
+
+          {/* 404 FALLBACK */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
   );
