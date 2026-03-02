@@ -1,13 +1,18 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
 import FormField from "@components/ui/FormField";
 import Input from "@components/ui/Input";
 import Button from "@components/ui/Buttons";
-import { toastError, toastSuccess } from "@/lib/toast";
 
-import logo from "@/assets/logo_bbdit.png"
+import { toastError, toastSuccess } from "@/lib/toast";
+import { API_BASE_URL } from "@/config/api";
+import { setAuth } from "@/lib/auth";
+
+import logo from "@/assets/logo_bbdit.png";
+
 /* ---------- SCHEMA ---------- */
 const schema = z.object({
   memberId: z.string().min(1, "Member ID is required"),
@@ -17,6 +22,8 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -26,10 +33,41 @@ const LoginPage = () => {
     resolver: zodResolver(schema),
   });
 
-  /* ---------- SUBMIT ---------- */
   const onSubmit = async (data: FormValues) => {
-    await new Promise((r) => setTimeout(r, 800));
-    toastSuccess(`Welcome ${data.memberId}`);
+    try {
+      const response = await fetch(
+          `${API_BASE_URL}/api/auth/login`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              identifier: data.memberId,
+              password: data.password,
+            }),
+          }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toastError(result.message || "Authentication failed");
+        return;
+      }
+
+      // Securely store auth
+      setAuth(result.token);
+
+      toastSuccess(`Welcome ${result.user.name}`);
+
+      setTimeout(() => {
+        navigate("/dashboard", { replace: true });
+      }, 1200);
+
+    } catch {
+      toastError("Unable to connect to server");
+    }
   };
 
   const onError = () => {
@@ -41,24 +79,24 @@ const LoginPage = () => {
 
   return (
       <div className="min-h-screen flex items-center justify-center bg-bg relative overflow-hidden">
-        {/* subtle background gradient */}
         <div className="absolute inset-0 opacity-30 pointer-events-none">
           <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
           <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
         </div>
 
-        {/* auth card */}
         <div className="relative w-full max-w-sm">
           <div className="bg-surface border border-border rounded-2xl shadow-xl p-8 space-y-6">
 
-            {/* ---------- LOGO PLACEHOLDER ---------- */}
             <div className="flex justify-center">
               <div className="w-20 h-20 rounded-full bg-surface-muted border border-border flex items-center justify-center">
-                <img src={logo} alt="Logo" className="w-16 h-16 object-contain" />
+                <img
+                    src={logo}
+                    alt="Logo"
+                    className="w-16 h-16 object-contain"
+                />
               </div>
             </div>
 
-            {/* ---------- TITLE ---------- */}
             <div className="text-center space-y-1">
               <h1 className="text-xl font-semibold">Member Login</h1>
               <p className="text-sm text-text-muted">
@@ -66,13 +104,15 @@ const LoginPage = () => {
               </p>
             </div>
 
-            {/* ---------- FORM ---------- */}
             <form
                 onSubmit={handleSubmit(onSubmit, onError)}
                 className="space-y-4"
             >
               <FormField label="Member ID" error={errors.memberId?.message}>
-                <Input placeholder="Enter member ID" {...register("memberId")} />
+                <Input
+                    placeholder="Enter member ID"
+                    {...register("memberId")}
+                />
               </FormField>
 
               <FormField label="Password" error={errors.password?.message}>
@@ -93,6 +133,7 @@ const LoginPage = () => {
                 {isSubmitting ? "Signing in..." : "Sign in"}
               </Button>
             </form>
+
           </div>
         </div>
       </div>

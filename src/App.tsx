@@ -7,9 +7,9 @@ import HomeRoute from "@routes/HomeRoute";
 
 import LoginPage from "@pages/LoginPage";
 import NotFoundPage from "@pages/NotFoundPage";
+import Dashboard from "@pages/Dashboard.tsx";
 
 /* temp dashboard */
-const Dashboard = () => <div className="p-6">Dashboard</div>;
 
 const App = () => {
   return (

@@ -1,29 +1,35 @@
-import Container from "@components/ui/Container.tsx";
-import Section from "@components/ui/Section.tsx";
-import Card from "@components/ui/Card.tsx";
-import CardHeader from "@components/ui/CardHeader.tsx";
-import CardContent from "@components/ui/CardContent.tsx";
-import CardFooter from "@components/ui/CardFooter.tsx";
+import { useState } from "react";
+import { Modal } from "@components/ui/Modal";
+import Button from "@components/ui/Buttons";
 
+const Demo = () => {
+  const [open, setOpen] = useState(false);
 
-const DemoCard = () => {
   return (
       <>
-        <Container>
-          <Section>
-            <Card>
-              <CardHeader>Student Stats</CardHeader>
+        <Button
+            variant="primary"
+            intent="fill"
+            onClick={() => setOpen(true)}
+        >
+          Open Modal
+        </Button>
 
-              <CardContent>
-                This is content
-              </CardContent>
-
-              <CardFooter>Footer actions</CardFooter>
-            </Card>
-          </Section>
-        </Container>
+        <Modal open={open} onClose={() => setOpen(false)}>
+          <Modal.Header>Test Modal</Modal.Header>
+          <Modal.Body>Modal content</Modal.Body>
+          <Modal.Footer>
+            <Button
+                variant="mute-secondary"
+                intent="stroke"
+                onClick={() => setOpen(false)}
+            >
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </>
-  )
-}
+  );
+};
 
-export default DemoCard;
+export default Demo;
