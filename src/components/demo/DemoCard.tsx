@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Modal } from "@components/ui/Modal";
-import Button from "@components/ui/Buttons";
+import { Modal } from "@components/primitive_ui/Modal";
+import Button from "@components/primitive_ui/Buttons";
 
 const Demo = () => {
   const [open, setOpen] = useState(false);

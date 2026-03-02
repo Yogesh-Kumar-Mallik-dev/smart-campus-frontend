@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import clsx from "clsx";
-import Button from "@components/ui/Buttons";
+import Button from "@components/primitive_ui/Buttons";
 
 interface EmptyStateProps {
   title: string;

@@ -16,7 +16,7 @@
       "@store/*": ["src/store/*"],
       "@lib/*": ["src/lib/*"],
       "@routes/*": ["src/routes/*"],
-      "@pages/*": ["src/components/pages/*"],
+      "@pages/*": ["src/pages/*"],
     },
 
     /* Bundler mode */

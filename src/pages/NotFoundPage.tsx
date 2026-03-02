@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
-import Button from "@components/ui/Buttons";
+import Button from "@components/primitive_ui/Buttons.tsx";
 
 const NotFoundPage = () => {
   const navigate = useNavigate();

@@ -3,13 +3,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 
-import FormField from "@components/ui/FormField";
-import Input from "@components/ui/Input";
-import Button from "@components/ui/Buttons";
+import FormField from "@components/primitive_ui/FormField.tsx";
+import Input from "@components/primitive_ui/Input.tsx";
+import Button from "@components/primitive_ui/Buttons.tsx";
 
-import { toastError, toastSuccess } from "@/lib/toast";
-import { API_BASE_URL } from "@/config/api";
-import { setAuth } from "@/lib/auth";
+import { toastError, toastSuccess } from "@lib/toast.ts";
+import { API_BASE_URL } from "@/config/api.ts";
+import { setAuth } from "@lib/auth.ts";
 
 import logo from "@/assets/logo_bbdit.png";
 

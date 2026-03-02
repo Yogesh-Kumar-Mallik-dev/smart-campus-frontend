@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import Button from "@components/ui/Buttons";
+import Button from "@components/primitive_ui/Buttons";
 import { logout } from "@/lib/auth";
 import { toastSuccess } from "@/lib/toast";
 
