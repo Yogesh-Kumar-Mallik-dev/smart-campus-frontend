@@ -8,7 +8,6 @@
     "types": ["vite/client"],
     "skipLibCheck": true,
 
-    /* ⭐ ADD THESE TWO */
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
@@ -17,6 +16,8 @@
       "@lib/*": ["src/lib/*"],
       "@routes/*": ["src/routes/*"],
       "@pages/*": ["src/pages/*"],
+      "@utils/*": ["src/utils/*"],
+      "@config/*": ["src/config/*"]
     },
 
     /* Bundler mode */

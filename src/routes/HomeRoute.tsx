@@ -1,8 +1,15 @@
+// routes/HomeRoute.tsx
+
 import { Navigate } from "react-router-dom";
-import { isLoggedIn } from "@lib/auth";
+import { useAuthStore } from "@/store/authStore";
 
 const HomeRoute = () => {
-  return isLoggedIn()
+  const user = useAuthStore((s) => s.user);
+  const hydrated = useAuthStore((s) => s.hydrated);
+
+  if (!hydrated) return null;
+
+  return user
       ? <Navigate to="/dashboard" replace />
       : <Navigate to="/login" replace />;
 };

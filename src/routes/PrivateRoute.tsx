@@ -1,9 +1,16 @@
 // routes/PrivateRoute.tsx
+
 import { Navigate, Outlet } from "react-router-dom";
-import { isLoggedIn } from "@lib/auth";
+import { useAuthStore } from "@/store/authStore";
 
 const PrivateRoute = () => {
-  return isLoggedIn() ? <Outlet /> : <Navigate to="/login" replace />;
+  const { token, user } = useAuthStore();
+
+  if (!token || !user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoute;
