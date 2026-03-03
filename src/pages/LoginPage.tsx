@@ -10,7 +10,6 @@ import Button from "@components/primitive_ui/Buttons";
 import { toastError, toastSuccess } from "@lib/toast";
 import { API_BASE_URL } from "@/config/api";
 import { useAuthStore } from "@/store/authStore";
-// import this at top
 
 import logo from "@/assets/logo_bbdit.png";
 
@@ -57,13 +56,13 @@ const LoginPage = () => {
         return;
       }
 
-      // 🔥 Store token + user in Zustand
+      // Store token + user in Zustand
       useAuthStore.getState().login({
         token: result.token,
         user: result.user,
       });
 
-      toastSuccess(`Welcome ${result.user.name}`);
+      toastSuccess(`Welcome ${result.user.full_name}`);
 
       setTimeout(() => {
         navigate("/dashboard", { replace: true });
@@ -83,7 +82,6 @@ const LoginPage = () => {
 
   return (
       <div className="min-h-screen flex items-center justify-center bg-bg relative overflow-hidden">
-        {/* Background Glow */}
         <div className="absolute inset-0 opacity-30 pointer-events-none">
           <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
           <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
@@ -92,7 +90,6 @@ const LoginPage = () => {
         <div className="relative w-full max-w-sm">
           <div className="bg-surface border border-border rounded-2xl shadow-xl p-8 space-y-6">
 
-            {/* Logo */}
             <div className="flex justify-center">
               <div className="w-20 h-20 rounded-full bg-surface-muted border border-border flex items-center justify-center">
                 <img
@@ -103,7 +100,6 @@ const LoginPage = () => {
               </div>
             </div>
 
-            {/* Title */}
             <div className="text-center space-y-1">
               <h1 className="text-xl font-semibold">Member Login</h1>
               <p className="text-sm text-text-muted">
@@ -111,7 +107,6 @@ const LoginPage = () => {
               </p>
             </div>
 
-            {/* Form */}
             <form
                 onSubmit={handleSubmit(onSubmit, onError)}
                 className="space-y-4"

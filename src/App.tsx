@@ -13,6 +13,8 @@ import DashboardHome from "@pages/DashboardHome";
 import UsersPage from "@pages/UsersPage";
 import RolesPage from "@pages/RolesPage";
 
+import "@/App.css"
+
 const App = () => {
   return (
       <BrowserRouter>

@@ -54,7 +54,7 @@ const UsersPage = () => {
                               key={user._id}
                               className="border-b border-border hover:bg-surface-muted transition-colors"
                           >
-                            <td className="py-3 font-medium">{user.name}</td>
+                            <td className="py-3 font-medium">{user.full_name}</td>
                             <td className="text-text-muted">{user.email}</td>
 
                             <td className="space-x-1">

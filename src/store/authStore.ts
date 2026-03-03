@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 
 export interface AuthUser {
   id: string;
-  name: string;
+  full_name: string;   // updated
   roles: string[];
 }
 
@@ -11,6 +11,7 @@ interface AuthState {
   token: string | null;
   user: AuthUser | null;
   hydrated: boolean;
+
   login: (data: { token: string; user: AuthUser }) => void;
   logout: () => void;
   setHydrated: () => void;

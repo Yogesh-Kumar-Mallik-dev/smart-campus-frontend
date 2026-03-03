@@ -1,129 +1,158 @@
-import { useMemo } from "react";
-import Section from "@components/primitive_ui/Section";
+import { useAuthStore } from "@/store/authStore";
+
 import Container from "@components/primitive_ui/Container";
+import Section from "@components/primitive_ui/Section";
+
 import Card from "@components/primitive_ui/Card";
 import CardHeader from "@components/primitive_ui/CardHeader";
 import CardContent from "@components/primitive_ui/CardContent";
-import Badge from "@components/primitive_ui/Badge";
-
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  roles: string[];
-  memberId?: string | null;
-  tempId: string;
-  status: string;
-}
+import CardFooter from "@components/primitive_ui/CardFooter";
 
 const DashboardHome = () => {
-  // Temporary static data (replace with backend fetch later)
-  const users: User[] = [];
+  const user = useAuthStore((s) => s.user);
+  const roles = user?.roles || [];
 
-  const stats = useMemo(() => {
-    const total = users.length;
-    const active = users.filter((u) => u.status === "ACTIVE").length;
-    const students = users.filter((u) => u.roles.includes("STUDENT")).length;
-    const teachers = users.filter((u) => u.roles.includes("TEACHER")).length;
-    const admins = users.filter((u) => u.roles.includes("ADMIN")).length;
-    const pendingMemberId = users.filter((u) => !u.memberId).length;
+  const isRegistrar = roles.includes("REGISTRAR");
+  const isAdmin = roles.includes("ADMIN");
+  const isTeacher = roles.includes("TEACHER");
+  const isStudent = roles.includes("STUDENT");
+  const isMess = roles.includes("MESS");
 
-    return {
-      total,
-      active,
-      students,
-      teachers,
-      admins,
-      pendingMemberId,
-    };
-  }, [users]);
+  const roleDescription: Record<string, string> = {
+    STUDENT: "Track your academic progress and stay updated.",
+    TEACHER: "Manage your classes and monitor attendance.",
+    ADMIN: "Oversee campus operations and system activity.",
+    REGISTRAR: "Manage institutional records and accounts.",
+    MESS: "Monitor meals and daily mess activity.",
+  };
+
+  const defaultDescription =
+      "Access your tools, stay informed, and manage your campus activities from here.";
+
+  const primaryRole = user?.roles?.[0];
+
+  const description =
+      (primaryRole && roleDescription[primaryRole]) ||
+      defaultDescription;
 
   return (
-      <Section>
-        <Container>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <Container>
+        <Section className="space-y-6">
 
-            {/* Total Users */}
+          {/* 🔹 Row 1 — Welcome (Full Width) */}
+          <Card>
+            <CardContent className="py-12 px-8">
+              <div className="space-y-3">
+                <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
+                  Hello{user?.full_name ? `, ${user.full_name}` : ""}
+                </h1>
+
+                <p className="text-base text-text-muted max-w-3xl">
+                  {description}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 🔹 Row 2 — Announcements + Notifications */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
-              <CardHeader>Total Users</CardHeader>
+              <CardHeader>Announcements</CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-text">
-                  {stats.total}
-                </div>
-                <Badge variant="info" className="mt-2">
-                  All registered accounts
-                </Badge>
+                <p className="text-text-muted">
+                  {description}
+                </p>
               </CardContent>
             </Card>
 
-            {/* Active Users */}
             <Card>
-              <CardHeader>Active Users</CardHeader>
+              <CardHeader>Notifications</CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-success">
-                  {stats.active}
-                </div>
-                <Badge variant="success" className="mt-2">
-                  Currently active
-                </Badge>
+                <p className="text-text-muted">
+                  You are all caught up.
+                </p>
               </CardContent>
             </Card>
-
-            {/* Students */}
-            <Card>
-              <CardHeader>Students</CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-primary">
-                  {stats.students}
-                </div>
-                <Badge className="mt-2">
-                  Role: STUDENT
-                </Badge>
-              </CardContent>
-            </Card>
-
-            {/* Teachers */}
-            <Card>
-              <CardHeader>Teachers</CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-secondary">
-                  {stats.teachers}
-                </div>
-                <Badge className="mt-2">
-                  Role: TEACHER
-                </Badge>
-              </CardContent>
-            </Card>
-
-            {/* Admins */}
-            <Card>
-              <CardHeader>Admins</CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-warning">
-                  {stats.admins}
-                </div>
-                <Badge variant="warning" className="mt-2">
-                  Elevated access
-                </Badge>
-              </CardContent>
-            </Card>
-
-            {/* Pending Member ID */}
-            <Card>
-              <CardHeader>Pending Member ID</CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-error">
-                  {stats.pendingMemberId}
-                </div>
-                <Badge variant="error" className="mt-2">
-                  Requires assignment
-                </Badge>
-              </CardContent>
-            </Card>
-
           </div>
-        </Container>
-      </Section>
+
+          {/* 🔹 Role-Based Grid (Everything Below) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+            {(isRegistrar || isAdmin) && (
+                <>
+                  <Card>
+                    <CardHeader>Total Users</CardHeader>
+                    <CardContent>
+                      <p className="text-3xl font-bold">0</p>
+                    </CardContent>
+                    <CardFooter>
+                  <span className="text-sm text-text-muted">
+                    System-wide accounts
+                  </span>
+                    </CardFooter>
+                  </Card>
+                </>
+            )}
+
+            {isTeacher && (
+                <>
+                  <Card>
+                    <CardHeader>Assigned Classes</CardHeader>
+                    <CardContent>
+                      <p className="text-3xl font-bold">0</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>Today's Attendance</CardHeader>
+                    <CardContent>
+                      <p className="text-3xl font-bold">0%</p>
+                    </CardContent>
+                  </Card>
+                </>
+            )}
+
+            {isStudent && (
+                <>
+                  <Card>
+                    <CardHeader>My Attendance</CardHeader>
+                    <CardContent>
+                      <p className="text-3xl font-bold">0%</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>My Courses</CardHeader>
+                    <CardContent>
+                      <p className="text-3xl font-bold">0</p>
+                    </CardContent>
+                  </Card>
+                </>
+            )}
+
+            {isMess && (
+                <>
+                  <Card>
+                    <CardHeader>Today's Menu</CardHeader>
+                    <CardContent>
+                      <p className="text-text-muted">
+                        No menu uploaded.
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>Meal Attendance</CardHeader>
+                    <CardContent>
+                      <p className="text-3xl font-bold">0</p>
+                    </CardContent>
+                  </Card>
+                </>
+            )}
+          </div>
+
+        </Section>
+      </Container>
   );
 };
 

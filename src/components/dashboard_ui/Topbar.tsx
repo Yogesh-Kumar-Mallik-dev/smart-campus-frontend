@@ -1,22 +1,32 @@
+import { useLocation } from "react-router-dom";
 import Container from "@components/primitive_ui/Container";
-import Button from "@components/primitive_ui/Buttons";
+import ThemeToggle from "@components/primitive_ui/ThemeToggle";
+import { sidebarItems } from "@/config/sidebar.config";
 
-interface TopbarProps {
-  onCreate: () => void;
-}
+const Topbar = () => {
+  const location = useLocation();
+  const currentPath = location.pathname;
 
-const Topbar = ({ onCreate }: TopbarProps) => {
+  // Sort by longest path first
+  const sortedItems = [...sidebarItems].sort(
+      (a, b) => b.path.length - a.path.length
+  );
+
+  const matchedItem = sortedItems.find((item) =>
+      currentPath.startsWith(item.path)
+  );
+
+  const title = matchedItem?.label || "Dashboard";
+
   return (
       <div className="border-b border-border bg-surface">
         <Container>
           <div className="flex items-center justify-between py-4">
             <h2 className="text-lg font-semibold text-text">
-              User Management
+              {title}
             </h2>
 
-            <Button variant="primary" intent="fill" onClick={onCreate}>
-              Create User
-            </Button>
+            <ThemeToggle />
           </div>
         </Container>
       </div>

@@ -1,7 +1,16 @@
-import type { ReactNode } from "react";
+import clsx from "clsx";
+import type { ReactNode, HTMLAttributes } from "react";
 
-const CardContent = ({ children }: { children: ReactNode }) => {
-  return <div>{children}</div>;
+interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode;
+}
+
+const CardContent = ({ children, className, ...props }: CardContentProps) => {
+  return (
+      <div className={clsx(className)} {...props}>
+        {children}
+      </div>
+  );
 };
 
 export default CardContent;

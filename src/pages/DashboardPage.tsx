@@ -9,8 +9,10 @@ const DashboardPage = () => {
       <AppLayout>
         <Sidebar />
         <Main>
-          <Topbar onCreate={() => {}} />
-          <Outlet />
+          <Topbar />
+          <div className="flex-1 overflow-y-auto overscroll-contain no-scrollbar">
+            <Outlet />
+          </div>
         </Main>
       </AppLayout>
   );
