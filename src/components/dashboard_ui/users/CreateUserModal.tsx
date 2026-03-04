@@ -7,11 +7,16 @@ import { useState } from "react";
 
 import { toastSuccess, toastError } from "@/lib/toast";
 import api from "@config/api";
+import { AxiosError } from "axios";
 
 interface Props {
   open: boolean;
   onClose: () => void;
   onCreated: () => void;
+}
+
+interface ApiError {
+  message?: string;
 }
 
 const roles = ["STUDENT", "TEACHER", "ADMIN", "MESS"];
@@ -66,8 +71,11 @@ const CreateUserModal = ({ open, onClose, onCreated }: Props) => {
 
     } catch (error: unknown) {
 
-      const message =
-          (error as any)?.response?.data?.message || "Failed to create user";
+      let message = "Failed to create user";
+
+      if (error instanceof AxiosError) {
+        message = (error.response?.data as ApiError)?.message || message;
+      }
 
       toastError(message);
 
@@ -79,110 +87,111 @@ const CreateUserModal = ({ open, onClose, onCreated }: Props) => {
   /* ================= UI ================= */
 
   return (
-      <Modal open={open} onClose={onClose}>
-        <Modal.Header>Create User</Modal.Header>
+    <Modal open={open} onClose={onClose}>
+      <Modal.Header>Create User</Modal.Header>
 
-        <Modal.Body>
+      <Modal.Body>
 
-          <div className="space-y-4">
+        <div className="space-y-4">
 
-            <FormField label="Full Name">
+          <FormField label="Full Name">
+            <Input
+              placeholder="Enter full name"
+              onChange={(e) =>
+                setForm({ ...form, full_name: e.target.value })
+              }
+            />
+          </FormField>
+
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={sameName}
+              onChange={() => setSameName(!sameName)}
+            />
+            Academic name same as full name
+          </label>
+
+          {!sameName && (
+            <FormField label="Academic Name">
               <Input
-                  placeholder="Enter full name"
-                  onChange={(e) =>
-                      setForm({ ...form, full_name: e.target.value })
-                  }
+                placeholder="Enter academic name"
+                onChange={(e) =>
+                  setForm({ ...form, academic_name: e.target.value })
+                }
               />
             </FormField>
+          )}
 
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                  type="checkbox"
-                  checked={sameName}
-                  onChange={() => setSameName(!sameName)}
-              />
-              Academic name same as full name
-            </label>
+          <FormField label="Email">
+            <Input
+              type="email"
+              placeholder="Enter email"
+              onChange={(e) =>
+                setForm({ ...form, email: e.target.value })
+              }
+            />
+          </FormField>
 
-            {!sameName && (
-                <FormField label="Academic Name">
-                  <Input
-                      placeholder="Enter academic name"
-                      onChange={(e) =>
-                          setForm({ ...form, academic_name: e.target.value })
-                      }
-                  />
-                </FormField>
-            )}
+          <FormField label="Member ID (optional)">
+            <Input
+              placeholder="Enter member ID"
+              onChange={(e) =>
+                setForm({ ...form, memberId: e.target.value })
+              }
+            />
+          </FormField>
 
-            <FormField label="Email">
-              <Input
-                  type="email"
-                  placeholder="Enter email"
-                  onChange={(e) =>
-                      setForm({ ...form, email: e.target.value })
-                  }
-              />
-            </FormField>
+          <div>
+            <p className="text-sm font-medium mb-2">Roles</p>
 
-            <FormField label="Member ID (optional)">
-              <Input
-                  placeholder="Enter member ID"
-                  onChange={(e) =>
-                      setForm({ ...form, memberId: e.target.value })
-                  }
-              />
-            </FormField>
-
-            <div>
-              <p className="text-sm font-medium mb-2">Roles</p>
-
-              <div className="flex flex-wrap gap-2">
-                {roles.map((role) => (
-                    <button
-                        key={role}
-                        type="button"
-                        onClick={() => toggleRole(role)}
-                        className={`px-3 py-1 rounded border text-sm transition
-                  ${
-                            form.roles.includes(role)
-                                ? "bg-primary text-white border-primary"
-                                : "border-border"
-                        }`}
-                    >
-                      {role}
-                    </button>
-                ))}
-              </div>
+            <div className="flex flex-wrap gap-2">
+              {roles.map((role) => (
+                <button
+                  key={role}
+                  type="button"
+                  onClick={() => toggleRole(role)}
+                  className={`px-3 py-1 rounded border text-sm transition
+${
+  form.roles.includes(role)
+      ? "bg-primary text-white border-primary"
+      : "border-border"
+}`}
+                >
+                  {role}
+                </button>
+              ))}
             </div>
-
           </div>
 
-        </Modal.Body>
+        </div>
 
-        <Modal.Footer>
+      </Modal.Body>
 
-          <Button
-              variant="secondary"
-              intent="stroke"
-              onClick={onClose}
-              disabled={loading}
-          >
-            Cancel
-          </Button>
+      <Modal.Footer>
 
-          <Button
-              variant="primary"
-              intent="fill"
-              onClick={handleSubmit}
-              disabled={loading}
-          >
-            {loading ? "Creating..." : "Create User"}
-          </Button>
+        <Button
+          variant="secondary"
+          intent="stroke"
+          onClick={onClose}
+          disabled={loading}
+        >
+          Cancel
+        </Button>
 
-        </Modal.Footer>
-      </Modal>
+        <Button
+          variant="primary"
+          intent="fill"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? "Creating..." : "Create User"}
+        </Button>
+
+      </Modal.Footer>
+    </Modal>
   );
 };
 
 export default CreateUserModal;
+
