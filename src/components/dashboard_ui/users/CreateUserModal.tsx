@@ -6,6 +6,7 @@ import FormField from "@components/primitive_ui/FormField";
 import { useState } from "react";
 
 import { toastSuccess, toastError } from "@/lib/toast";
+import api from "@config/api";
 
 interface Props {
   open: boolean;
@@ -28,6 +29,8 @@ const CreateUserModal = ({ open, onClose, onCreated }: Props) => {
     roles: [] as string[],
   });
 
+  /* ================= ROLE TOGGLE ================= */
+
   const toggleRole = (role: string) => {
     if (form.roles.includes(role)) {
       setForm({
@@ -42,9 +45,10 @@ const CreateUserModal = ({ open, onClose, onCreated }: Props) => {
     }
   };
 
+  /* ================= SUBMIT ================= */
+
   const handleSubmit = async () => {
     try {
-
       setLoading(true);
 
       const payload = {
@@ -53,31 +57,17 @@ const CreateUserModal = ({ open, onClose, onCreated }: Props) => {
         memberId: form.memberId || null,
       };
 
-      const res = await fetch("/api/auth/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await api.post("/api/auth/create", payload);
 
-      const data = await res.json();
+      toastSuccess(`User created (Temp ID: ${res.data.tempId})`);
 
-      if (!res.ok) {
-        const message = data?.message || "Failed to create user";
-        toastError(message);
-        return;
-      }
+      onCreated(); // refresh users list
+      onClose();   // close modal
 
-      toastSuccess(`User created (Temp ID: ${data.tempId})`);
-
-      onCreated();
-      onClose();
-
-    } catch (error) {
+    } catch (error: unknown) {
 
       const message =
-          error instanceof Error ? error.message : "Failed to create user";
+          (error as any)?.response?.data?.message || "Failed to create user";
 
       toastError(message);
 
@@ -85,6 +75,8 @@ const CreateUserModal = ({ open, onClose, onCreated }: Props) => {
       setLoading(false);
     }
   };
+
+  /* ================= UI ================= */
 
   return (
       <Modal open={open} onClose={onClose}>
