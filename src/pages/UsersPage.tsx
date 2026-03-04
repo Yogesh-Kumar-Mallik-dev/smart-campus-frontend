@@ -11,7 +11,7 @@ import { useState } from "react";
 
 interface User {
   _id: string;
-  name: string;
+  full_name: string;
   email: string;
   roles: string[];
   memberId?: string | null;

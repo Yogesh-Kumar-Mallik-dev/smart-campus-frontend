@@ -7,6 +7,8 @@ import Card from "@components/primitive_ui/Card";
 import CardHeader from "@components/primitive_ui/CardHeader";
 import CardContent from "@components/primitive_ui/CardContent";
 import CardFooter from "@components/primitive_ui/CardFooter";
+import AnnouncementPanel from "@components/dashboard_ui/AnnouncementPanel.tsx";
+import NotificationPanel from "@components/dashboard_ui/NotificationPanel.tsx";
 
 const DashboardHome = () => {
   const user = useAuthStore((s) => s.user);
@@ -56,23 +58,8 @@ const DashboardHome = () => {
 
           {/* 🔹 Row 2 — Announcements + Notifications */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>Announcements</CardHeader>
-              <CardContent>
-                <p className="text-text-muted">
-                  {description}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>Notifications</CardHeader>
-              <CardContent>
-                <p className="text-text-muted">
-                  You are all caught up.
-                </p>
-              </CardContent>
-            </Card>
+            <AnnouncementPanel />
+            <NotificationPanel />
           </div>
 
           {/* 🔹 Role-Based Grid (Everything Below) */}
