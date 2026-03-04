@@ -27,15 +27,19 @@ const CardRoot = ({ children, className }: CardProps) => {
 /* SUB COMPONENTS */
 /* ============================= */
 
-const Header = ({ children }: { children: ReactNode }) => {
-  return <div className="mb-4 font-semibold">{children}</div>;
-};
-
-interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
+interface CardSectionProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
-const Content = ({ children, className, ...props }: CardContentProps) => {
+const Header = ({ children, className }: CardSectionProps) => {
+  return (
+      <div className={clsx("mb-4 font-semibold", className)}>
+        {children}
+      </div>
+  );
+};
+
+const Content = ({ children, className, ...props }: CardSectionProps) => {
   return (
       <div className={clsx(className)} {...props}>
         {children}
@@ -43,8 +47,12 @@ const Content = ({ children, className, ...props }: CardContentProps) => {
   );
 };
 
-const Footer = ({ children }: { children: ReactNode }) => {
-  return <div className="mt-4 pt-4 border-t border-border">{children}</div>;
+const Footer = ({ children, className }: CardSectionProps) => {
+  return (
+      <div className={clsx("mt-4 pt-4 border-t border-border", className)}>
+        {children}
+      </div>
+  );
 };
 
 /* ============================= */
